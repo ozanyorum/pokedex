@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" defaultTheme="dark">
           <main>
             <div className="mx-auto text-center m-4 text-6xl font-bold">
               <Link href="/">PokéDex</Link>
