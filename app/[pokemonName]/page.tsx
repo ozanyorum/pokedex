@@ -10,8 +10,6 @@ export default async function PokemonPage({
   const { pokemonName } = params;
   const pokemonObject = await getPokemon(pokemonName);
 
-  console.log(pokemonObject);
-
   interface PokemonType {
     type: {
       name: string;

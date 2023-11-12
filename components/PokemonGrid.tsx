@@ -15,8 +15,6 @@ interface PokemonGridProps {
 export function PokemonGrid({ pokemonList }: PokemonGridProps) {
   const [searchText, setSearchText] = useState("");
 
-  console.log(pokemonList);
-
   const searchFilter = (pokemonList: Pokemon[]) => {
     return pokemonList.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(searchText.toLowerCase())
@@ -27,9 +25,10 @@ export function PokemonGrid({ pokemonList }: PokemonGridProps) {
   return (
     <>
       <div>
-        <h2 className="text-2xl py-4 text-center mx-auto">Search</h2>
-        <div className="max-w-xs mx-auto py-4">
+        <h2 className="text-2xl text-center mx-auto m-4">Search</h2>
+        <div className="max-w-xs mx-auto m-4">
           <Input
+            className="text-center"
             type="text"
             value={searchText}
             id="pokemonName"
