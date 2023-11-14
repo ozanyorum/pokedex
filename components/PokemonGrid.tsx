@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Input } from "./ui/input";
 import { PokemonCard } from "./PokemonCard";
 
@@ -15,13 +15,17 @@ interface PokemonGridProps {
 export function PokemonGrid({ pokemonList }: PokemonGridProps) {
   const [searchText, setSearchText] = useState("");
 
-  const searchFilter = (pokemonList: Pokemon[]) => {
-    return pokemonList.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-  };
+  function useSearchFilter(searchText: string) {
+    return useMemo(() => {
+      return (list: Pokemon[]) =>
+        list.filter((pokemon) =>
+          pokemon.name.toLowerCase().includes(searchText.toLowerCase())
+        );
+    }, [searchText]);
+  }
 
-  const filteredPokemonList = searchFilter(pokemonList);
+  const filteredPokemonList = useSearchFilter(searchText)(pokemonList);
+
   return (
     <>
       <div>
