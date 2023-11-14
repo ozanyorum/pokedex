@@ -52,7 +52,7 @@ export default function Home() {
   }
 
   async function fetchData() {
-    const pokemonList = await getPokemonList(151, 0);
+    const pokemonList = await getPokemonList(905, 0);
     setAllPokemonList(pokemonList);
     setFilteredPokemonList(pokemonList);
   }
