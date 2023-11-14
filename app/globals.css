@@ -76,5 +76,5 @@
 }
 
 .custom-button {
-  @apply text-center rounded-lg border p-2 transition-colors border-gray-500 hover:border-gray-300 hover:dark:border-neutral-200  cursor-pointer
+  @apply text-center rounded-lg border p-2 transition-colors border-muted hover:border-foreground cursor-pointer
 }

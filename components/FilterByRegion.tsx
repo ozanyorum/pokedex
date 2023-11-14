@@ -30,7 +30,7 @@ export function FilterByRegion({ onRegionChange }: any) {
           <h2
             key={region}
             className={`custom-button ${
-              selectedRegion === region ? "bg-secondary" : ""
+              selectedRegion === region ? "bg-muted" : ""
             }`}
             onClick={() => handleRegionClick(region)}
           >

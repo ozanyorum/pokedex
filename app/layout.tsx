@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "PokéDex",
-  description: "Pokémons of Kanto Region",
+  description: "Gotta Catch 'Em All!",
 };
 
 export default function RootLayout({
