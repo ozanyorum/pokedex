@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 export function FilterByRegion({ onRegionChange }: any) {
   const regions = [
     "All",
@@ -13,8 +15,11 @@ export function FilterByRegion({ onRegionChange }: any) {
     "Galar",
   ];
 
+  const [selectedRegion, setSelectedRegion] = useState("All");
+
   function handleRegionClick(selectedRegion: string) {
     onRegionChange(selectedRegion);
+    setSelectedRegion(selectedRegion);
   }
 
   return (
@@ -24,7 +29,9 @@ export function FilterByRegion({ onRegionChange }: any) {
         {regions.map((region) => (
           <h2
             key={region}
-            className="custom-button"
+            className={`custom-button ${
+              selectedRegion === region ? "bg-secondary" : ""
+            }`}
             onClick={() => handleRegionClick(region)}
           >
             {region === "All" ? "Show All" : region}
