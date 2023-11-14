@@ -2,36 +2,50 @@ import { getPokemon } from "@/lib/PokemonAPI";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 
+interface PokemonType {
+  type: {
+    name: string;
+  };
+}
+
+interface Stat {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+}
+
+interface PokemonObject {
+  id: number;
+  sprites: {
+    other: {
+      "official-artwork": {
+        front_default: string;
+      };
+    };
+  };
+  types: PokemonType[];
+  stats: Stat[];
+}
+
 export default async function PokemonPage({
   params,
 }: {
   params: { pokemonName: string };
 }) {
   const { pokemonName } = params;
-  const pokemonObject = await getPokemon(pokemonName);
-
-  interface PokemonType {
-    type: {
-      name: string;
-    };
-  }
-
-  interface Stat {
-    base_stat: number;
-    stat: {
-      name: string;
-    };
-  }
+  const pokemonObject: PokemonObject = await getPokemon(pokemonName);
 
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-3xl font-bold m-4">
         {pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)}
+        {" #" + pokemonObject.id}
       </h1>
       <div className="m-4">
         <Image
           src={pokemonObject.sprites.other["official-artwork"].front_default}
-          alt=""
+          alt={`Official artwork for ${pokemonName}.`}
           width={200}
           height={200}
         />

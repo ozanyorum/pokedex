@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Input } from "./ui/input";
 import { PokemonCard } from "./PokemonCard";
 
@@ -12,19 +12,24 @@ interface PokemonGridProps {
   pokemonList: Pokemon[];
 }
 
+function useSearchFilter(searchText: string, list: Pokemon[]) {
+  return useMemo(() => {
+    return list.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }, [searchText, list]);
+}
+
 export function PokemonGrid({ pokemonList }: PokemonGridProps) {
   const [searchText, setSearchText] = useState("");
+  const filteredPokemonList = useSearchFilter(searchText, pokemonList);
 
-  function useSearchFilter(searchText: string) {
-    return useMemo(() => {
-      return (list: Pokemon[]) =>
-        list.filter((pokemon) =>
-          pokemon.name.toLowerCase().includes(searchText.toLowerCase())
-        );
-    }, [searchText]);
-  }
-
-  const filteredPokemonList = useSearchFilter(searchText)(pokemonList);
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchText(e.target.value);
+    },
+    []
+  );
 
   return (
     <>
@@ -38,7 +43,7 @@ export function PokemonGrid({ pokemonList }: PokemonGridProps) {
             id="pokemonName"
             placeholder="Enter Pokemon Name"
             autoComplete="off"
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={handleSearchChange}
           ></Input>
         </div>
       </div>
