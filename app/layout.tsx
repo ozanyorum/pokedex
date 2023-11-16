@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Link from "next/link";
+import NavBar from "@/components/NavBar";
+import { PokemonProvider } from "@/lib/PokemonContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,16 +18,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <main>
-            <div className="mx-auto text-center m-4 text-6xl font-bold">
-              <Link href="/">PokéDex</Link>
-            </div>
-            {children}
-          </main>
-        </ThemeProvider>
+        <PokemonProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark">
+            <main>
+              <div>
+                <NavBar />
+              </div>
+              {children}
+            </main>
+          </ThemeProvider>
+        </PokemonProvider>
       </body>
     </html>
   );

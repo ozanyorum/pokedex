@@ -1,15 +1,11 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Input } from "./ui/input";
 import { PokemonCard } from "./PokemonCard";
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
+import { usePokemonContext } from "@/lib/PokemonContext";
 
 interface PokemonGridProps {
-  pokemonList: Pokemon[];
+  initialPokemonList: Pokemon[];
 }
 
 function useSearchFilter(searchText: string, list: Pokemon[]) {
@@ -20,9 +16,11 @@ function useSearchFilter(searchText: string, list: Pokemon[]) {
   }, [searchText, list]);
 }
 
-export function PokemonGrid({ pokemonList }: PokemonGridProps) {
+export function PokemonGrid({ initialPokemonList }: PokemonGridProps) {
+  const { currentPokemonList, setCurrentPokemonList, setAllPokemonList } =
+    usePokemonContext();
   const [searchText, setSearchText] = useState("");
-  const filteredPokemonList = useSearchFilter(searchText, pokemonList);
+  const filteredPokemonList = useSearchFilter(searchText, currentPokemonList);
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,11 +29,16 @@ export function PokemonGrid({ pokemonList }: PokemonGridProps) {
     []
   );
 
+  useEffect(() => {
+    setCurrentPokemonList(initialPokemonList);
+    setAllPokemonList(initialPokemonList);
+  }, [initialPokemonList, setAllPokemonList, setCurrentPokemonList]);
+
   return (
     <>
       <div>
         <h2 className="text-2xl text-center mx-auto m-4">Search</h2>
-        <div className="max-w-xs mx-auto m-4">
+        <div className="max-w-xs mx-auto shadow">
           <Input
             className="text-center"
             type="text"

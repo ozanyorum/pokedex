@@ -16,13 +16,13 @@
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
  
-    --secondary: 210 40% 96.1%;
+    --secondary: 210 40% 80%;
     --secondary-foreground: 222.2 47.4% 11.2%;
  
-    --muted: 210 40% 96.1%;
+    --muted: 210 40% 80%;
     --muted-foreground: 215.4 16.3% 46.9%;
  
-    --accent: 210 40% 96.1%;
+    --accent: 210 40% 80%;
     --accent-foreground: 222.2 47.4% 11.2%;
  
     --destructive: 0 84.2% 60.2%;
@@ -76,5 +76,8 @@
 }
 
 .custom-button {
-  @apply text-center rounded-lg border p-2 transition-colors border-muted hover:border-foreground cursor-pointer
+  @apply text-center rounded-2xl border p-2 border-secondary hover:border-primary cursor-pointer shadow bg-primary-foreground
+}
+.custom-button-selected {
+  @apply text-center rounded-2xl border p-2 border-secondary hover:border-primary cursor-pointer shadow bg-primary text-primary-foreground
 }

@@ -1,31 +1,34 @@
+import { Button } from "@/components/ui/button";
 import { getPokemon } from "@/lib/PokemonAPI";
-import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
+import Link from "next/link";
 
-interface PokemonType {
-  type: {
-    name: string;
-  };
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-interface Stat {
-  base_stat: number;
-  stat: {
-    name: string;
-  };
+function PokemonTypes({ types }: { types: PokemonType[] }) {
+  return (
+    <div className="m-4 text-2xl text-bold flex gap-8">
+      {types.map(({ type: { name } }) => (
+        <div key={name}>{name.toUpperCase()}</div>
+      ))}
+    </div>
+  );
 }
 
-interface PokemonObject {
-  id: number;
-  sprites: {
-    other: {
-      "official-artwork": {
-        front_default: string;
-      };
-    };
-  };
-  types: PokemonType[];
-  stats: Stat[];
+function PokemonStats({ stats }: { stats: PokemonStat[] }) {
+  return (
+    <div className="flex-col text-center m-4">
+      {stats.map(({ stat: { name }, base_stat }) => (
+        <div style={{ width: "400px" }} key={name}>
+          <h3>
+            {name.toUpperCase()}: {base_stat}
+          </h3>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default async function PokemonPage({
@@ -35,46 +38,43 @@ export default async function PokemonPage({
 }) {
   const { pokemonName } = params;
   const pokemonObject: PokemonObject = await getPokemon(pokemonName);
+  const capitalizedPokemonName = capitalizeFirstLetter(pokemonObject.name);
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-3xl font-bold m-4">
-        {pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)}
-        {" #" + pokemonObject.id}
-      </h1>
-      <div className="m-4">
+    <div className="flex flex-col items-center mt-10">
+      <div className="flex items-center gap-4">
+        <Link href={(pokemonObject.id - 1).toString()}>
+          {pokemonObject.id > 1 && <Button>Previous</Button>}
+        </Link>
+        <h1 className="text-3xl font-bold m-4">
+          {capitalizedPokemonName} {" #" + pokemonObject.id}
+        </h1>
+        <Link href={(pokemonObject.id + 1).toString()}>
+          {pokemonObject.id < 905 && <Button>Next</Button>}
+        </Link>
+      </div>
+      <div className="flex m-4">
         <Image
           src={pokemonObject.sprites.other["official-artwork"].front_default}
           alt={`Official artwork for ${pokemonName}.`}
           width={200}
           height={200}
         />
+        {/* <Image
+          src={pokemonObject.sprites.other.home.front_default}
+          alt={`Official artwork for ${pokemonName}.`}
+          width={200}
+          height={200}
+        />
+        <Image
+          src={pokemonObject.sprites.other.dream_world.front_default}
+          alt={`Official artwork for ${pokemonName}.`}
+          width={200}
+          height={200}
+        /> */}
       </div>
-      <div className="m-4 text-2xl text-bold flex gap-8">
-        {pokemonObject.types.map((typesObject: PokemonType) => {
-          const type = typesObject.type.name;
-          return <div key={type}>{type.toUpperCase()}</div>;
-        })}
-      </div>
-      <div className="flex-col m-4">
-        {pokemonObject.stats.map((statObject: Stat) => {
-          const statName = statObject.stat.name;
-          const statValue = statObject.base_stat;
-
-          return (
-            <div
-              className="flex items-stretch"
-              style={{ width: "400px" }}
-              key={statName}
-            >
-              <h3 className="p-3 w-2/4">
-                {statName.toUpperCase()}: {statValue}
-              </h3>
-              <Progress className="w-2/4 m-auto" value={statValue} />
-            </div>
-          );
-        })}
-      </div>
+      <PokemonTypes types={pokemonObject.types} />
+      <PokemonStats stats={pokemonObject.stats} />
     </div>
   );
 }

@@ -8,11 +8,7 @@ interface PokemonCardProps {
 
 export function PokemonCard({ name, id }: PokemonCardProps) {
   return (
-    <Link
-      href={name}
-      className="custom-button m-2 hover:bg-muted"
-      key={name + "Card"}
-    >
+    <Link href={id} className="custom-button m-2" key={name + "Card"}>
       <h2 className="text-l">{name.charAt(0).toUpperCase() + name.slice(1)}</h2>
       <Image
         className="inline-block"
